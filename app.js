@@ -2,33 +2,86 @@
  * Example store structure
  */
 const store = {
-  // 5 or more questions are required
+  
   questions: [
     {
-      question: 'What color is broccoli?',
+      question: 'Who was the first female designer?',
       answers: [
-        'red',
-        'orange',
-        'pink',
-        'green'
+        'Jennifer anniston',
+        'Coco Chanel',
+        'Ruth Bader Ginsberg',
+        'Hillary Clinton'
       ],
-      correctAnswer: 'green'
+      correctAnswer: 'Coco Chanel'
     },
     {
-      question: 'What is the current year?',
+      question: 'Who is a famed shoe designer featured in Sex and the City?',
       answers: [
-        '1970',
-        '2015',
-        '2019',
-        '2005'
+        'Christian Lacroix',
+        'John Leguizamo',
+        'Manolo Blahnik',
+        'Brad Pitt'
       ],
-      correctAnswer: '2019'
-    }
+      correctAnswer: 'Manolo Blahnik'
+    },
+    {
+      question: 'What type of hat is this?',//img here??
+      answers: [
+        'Flapper',
+        'Dorky hat',
+        'Postman',
+        'Cowboyhat'
+      ],
+      correctAnswer: 'Cowboy hat'
+    },
+    {
+      question: 'What shoe designer created the red soled shoe?',
+      answers: [
+        'Christian Louboutin',
+        'Jonathan Taylor Thomas',
+        'Steven Tyler',
+        'Gene Simmons'
+      ],
+      correctAnswer: 'Christian Louboutin'
+    },
+    {
+      question: 'What is widely considered the fashion capital of the world?',
+      answers: [
+        'Juneau, Alaska',
+        'Mexico City',
+        'Paris, France',
+        'North Siberia, Russia'
+      ],
+      correctAnswer: 'Paris, France'
+    },
+    
   ],
   quizStarted: false,
   questionNumber: 0,
   score: 0
 };
+
+//where does the wireframe go? per view, meaning its per 'question'
+//'answer' 'right' 'wrong' score, etc..
+function generateAnswerList(answers) {
+  //template goes here
+}
+
+// Rendering functions
+function renderQuestionText() {
+  //changes to the html go here
+}
+
+// Event handlers
+function handleAnswerSubmitted() {
+  $('main').on('submit', '#question-form', () => {
+  // Retrieve answer identifier of user-checked radio btn
+  // Perform check: User answer === Correct answer?
+  // Update STORE and render appropriate section
+  });
+}
+
+$(handleAnswerSubmitted);
 
 /**
  * 
