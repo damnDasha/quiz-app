@@ -77,11 +77,12 @@ function generateQuestionNumberandScoreHtml() {
   </ul>
 `;
 }
-//do i do the above for every question??
 
 function generateAnswersHtml() {
+  const answersArray = STORE.questions[STORE.currentQuestion].answers;
   let answersHtml = "";
-  //this is only a piece, something is missing
+  let i = 0;
+  //why arent the answers appearing?
 
   answersArray.forEach((answer, i) => {
     answersHtml += `
@@ -96,26 +97,69 @@ function generateAnswersHtml() {
   return answersHtml;
 }
 
-//lost on the below
 function generateQuestionHtml() {
   // what question are we on
   // STORE.questionNumber
   // how do we grab that question?
-  let question = STORE.questions[STORE.questionNumber];
+  let currentQuestion = STORE.questions[STORE.currentQuestion];
   // how can we then display that questions title
-  return `<div class="question">${question.question}</div>`;
+  return `
+  <form id="question-form" class="question-form">
+  <fieldset>
+  <div class="question">
+  <legend>${currentQuestion.question}</legend>
+  </div>
+  <div class="answers">
+  ${generateAnswersHtml()}
+  </div>
+  <button type="submit-button" id="submit-button"
+  tabindex="5">Submit</button>
+  <button type="next-question-button" id="next-question-button"
+  tabindex="6">Next</button>
+  </fieldset>
+  </form>
+  `;
 }
 
 function generateAnswerList(answers) {
-  //template goes here
+  //all the answers from the array html?
+}
+
+function generateResultsScreen() {
+  return `
+  <div class="results">
+  <form id="reset-quiz">
+  <fieldset>
+  <legend>You Scored:${STORE.score}/${STORE.questions.length}</legend>
+  </div>
+  <button type="button" id="reset">Reset Quiz</button>
+  </fieldset>
+  </form>
+  `;
+} //how come all the html isnt prettier?
+
+function generateFeedbackHtml() {
+  let correctAnswer = STORE.questions[STORE.currentQuestion].correctAnswer;
+  let html = "";
+  if (answerStatus === "correct") {
+    html = `
+    <div class="right-answer">Correct!</div>
+    `;
+  } else answerStatus === "incorrect";
+  {
+    html = `
+    <div class="wrong-answer">Sorry! You suck</div>
+    `;
+  }
 }
 
 // Rendering functions
 function renderQuestionText() {
   //changes to the html go here
+  //if //next button is clicked
+  //return html = generateQuestionHtml //should we give questions different names
+  //${question.question} + 1; //is this right?
 }
-
-function generateResultsScreen() {}
 
 /* all purpose render function that will conditionally
 render the page based upon the state of the STORE*/
@@ -141,31 +185,52 @@ function render() {
 
 function handleStartClick() {
   $("main").on("click", "#start", function(event) {
-    console.log("started");
+    //console.log("started");
     STORE.quizStarted = true;
     render();
   });
 }
 function handleNextQuestion() {
   $("body").on("click", "#next-question-btn", event => {
+    //console.log("next plz");
     render();
   });
 }
 
-//handles the
 function handleAnswerSubmitted() {
-  $("main").on("submit", "#question-form", () => {
+  $("main").on("click", "#submit", "#question-form", () => {
+    event.preventDefault();
+    const currentQuestion = STORE.questions[STORE.currentQuestions];
+
     // Retrieve answer identifier of user-checked radio btn
+    let selectedOption = $("input[name=options]:checked").val();
+    let optionContainerId = `#option-container-${currentQuestion.answers.findIndex(
+      i => i === selectedOption
+    )}`;
     // Perform check: User answer === Correct answer?
+
+    if (selectedOption === currentQuestion.correctAnswer) {
+      STORE.score++;
+      //ok now what?
+    }
     // Update STORE and render appropriate section
   });
 }
 $(handleAnswerSubmitted);
 
+function handleResetButton() {
+  $("main").on("reset", "#reset", () => {
+    resetQuiz();
+    render();
+  });
+}
+
 function handleQuizApp() {
   render();
   handleStartClick();
   handleNextQuestion();
+  handleAnswerSubmitted();
+  handleResetButton();
 }
 
 $(handleQuizApp);
