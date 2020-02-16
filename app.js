@@ -4,7 +4,7 @@
 const STORE = {
   questions: [
     {
-      question: "Who was the first female designer?",
+      question: "Who was the first female fashion designer?",
       answers: [
         "Jennifer anniston",
         "Coco Chanel",
@@ -79,10 +79,9 @@ function generateQuestionNumberandScoreHtml() {
 }
 
 function generateAnswersHtml() {
-  const answersArray = STORE.questions[STORE.currentQuestion].answers;
+  const answersArray = STORE.questions[STORE.questionNumber].answers;
   let answersHtml = "";
   let i = 0;
-  //why arent the answers appearing?
 
   answersArray.forEach((answer, i) => {
     answersHtml += `
@@ -102,20 +101,22 @@ function generateQuestionHtml() {
   // STORE.questionNumber
   // how do we grab that question?
   let currentQuestion = STORE.questions[STORE.questionNumber];
-  $("main").text(STORE.questionTitle);
+  //$("main").text(STORE.questionTitle);
   return `
   <form id="question-form" class="question-form">
   <fieldset>
   <div class="question">
-  <legend>${currentQuestion.question}</legend>
+  <h2>${currentQuestion.question}</h2>
   </div>
   <div class="answers">
   ${generateAnswersHtml()}
   </div>
+  <p>
   <button type="submit-button" id="submit-button"
   tabindex="5">Submit</button>
   <button type="next-question-button" id="next-question-button"
   tabindex="6">Next</button>
+  </p>
   </fieldset>
   </form>
   `;
@@ -139,33 +140,66 @@ function generateResultsScreen() {
   <div class="results">
   <form id="reset-quiz">
   <fieldset>
-  <legend>You Scored:${STORE.score}/${STORE.questions.length}</legend>
+  <h3>You Scored:${STORE.score}/${STORE.questions.length}</h3>
   </div>
-  <button type="button" id="reset">Reset Quiz</button>
+  <p>
+  <button type="button" id="reset">Reset Quiz</button></p>
   </fieldset>
   </form>
   </body>
-  `; //insert an html background with dresses
+  `;
 } //how come all the html isnt prettier?
 
 function generateFeedbackHtml() {
-  let correctAnswer = STORE.questions[STORE.currentQuestion].correctAnswer;
+  let correctAnswer = STORE.questions[STORE.questionNumber].correctAnswer;
   let html = "";
   if (answerStatus === "correct") {
     html = `
     <div class="right-answer">Correct!</div>
     `;
+    STORE.score++;
   } else answerStatus === "incorrect";
   {
     html = `
-    <div class="wrong-answer">Sorry! You suck</div>
+    <div class="wrong-answer">Sorry! That's wrong...
+    <p><b>the correct answer is:
+    ${STORE.correctAnswer}</b></p>
+    </div>
     `;
   }
 }
 
 // Rendering functions
 function renderQuestionText() {
-  //changes to the html go here
+  let question = STORE.questions[currentQuestion];
+  $("main").text(questionTitle);
+  $("main").html("");
+  for (var i = 0; i < STORE.question.answers.length; i++) {
+    $("main").closest(`
+    <li id="${i}">${question.answers[i]}</li>`);
+  }
+}
+
+//when somoene clicks next, the site needs to be rendered
+//with the next question, and its title, etc.
+
+/*$("main").on("click", "next-button", function(event) {
+    STORE.question[STORE.questionNumber + 1];
+  });
+}
+
+/*let currentQuestion = STORE.questions[STORE.questionNumber];
+  $("main").text(STORE.questionTitle);
+
+  if (STORE.currentQuestion + 1)
+  $("main").text(questionTitle + 1){
+
+  });
+
+  /let html = "";
+  //if (STORE.currentQuestion + 1) {
+    //$("main").html(generateQuestionHtml());
+  }
   //if next button is clicked
   //return html = generateQuestionHtml //should we give questions different names
   //${currentQuestion.question} + 1; //is this right?
@@ -193,17 +227,21 @@ function render() {
 
 function handleStartClick() {
   $("main").on("click", "#start", function(event) {
-    //console.log("started");
+    event.preventDefault();
     STORE.quizStarted = true;
     render();
   });
 }
 function handleNextQuestion() {
-  $("body").on("click", "#next-question-btn", event => {
-    //console.log("next plz");
+  $("main").on("click", "#next-question-btn", event => {
+    event.preventDefault();
+
+    //STORE.questionNumber++;
     render();
   });
 }
+
+//do i need a next button? submit should do the trick?
 
 function handleAnswerSubmitted() {
   $("main").on("click", "#submit", "#question-form", () => {
@@ -223,8 +261,8 @@ function handleAnswerSubmitted() {
     } else {
       $(optionContainerId).html(generateFeedbackHtml("incorrect"));
     }
-    STORE.currentQuestion++;
-    // Update STORE and render appropriate section
+    STORE.questionNumber++;
+    renderQuestionText();
   });
 }
 $(handleAnswerSubmitted);
