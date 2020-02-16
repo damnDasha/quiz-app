@@ -20,3 +20,7 @@
 ul {
   list-style: none;
 }
+
+#grad {
+  background-image: radial-gradient(#fff8fb, #bd96a5, #ddafc1);
+}

@@ -127,6 +127,7 @@ function generateAnswerList(answers) {
 
 function generateResultsScreen() {
   return `
+  <body background="https://www.onlinebooksreview.com/uploads/blog_images/2019/02/10_vector_fashion_girls_design_elements_set_575174.jpg">
   <div class="results">
   <form id="reset-quiz">
   <fieldset>
@@ -135,7 +136,8 @@ function generateResultsScreen() {
   <button type="button" id="reset">Reset Quiz</button>
   </fieldset>
   </form>
-  `;
+  </body>
+  `; //insert an html background with dresses
 } //how come all the html isnt prettier?
 
 function generateFeedbackHtml() {
@@ -156,9 +158,9 @@ function generateFeedbackHtml() {
 // Rendering functions
 function renderQuestionText() {
   //changes to the html go here
-  //if //next button is clicked
+  //if next button is clicked
   //return html = generateQuestionHtml //should we give questions different names
-  //${question.question} + 1; //is this right?
+  //${currentQuestion.question} + 1; //is this right?
 }
 
 /* all purpose render function that will conditionally
