@@ -11,7 +11,7 @@ const STORE = {
         "Ruth Bader Ginsberg",
         "Hillary Clinton"
       ],
-      correctAnswer: "Coco Chanel"
+      correctAnswer: 1
     },
     {
       question: "Who is a famed shoe designer featured in Sex and the City?",
@@ -21,12 +21,12 @@ const STORE = {
         "Manolo Blahnik",
         "Brad Pitt"
       ],
-      correctAnswer: "Manolo Blahnik"
+      correctAnswer: 2
     },
     {
-      question: "What type of hat is this?", //img here??
-      answers: ["Flapper", "Dorky hat", "Postman", "Cowboyhat"],
-      correctAnswer: "Cowboy hat"
+      question: "What type of hat do cowboys typically wear?",
+      answers: ["Flapper", "Dorky hat", "Postman", "Cowboy hat"],
+      correctAnswer: 3
     },
     {
       question: "What shoe designer created the red soled shoe?",
@@ -36,7 +36,7 @@ const STORE = {
         "Steven Tyler",
         "Gene Simmons"
       ],
-      correctAnswer: "Christian Louboutin"
+      correctAnswer: 0
     },
     {
       question: "What is widely considered the fashion capital of the world?",
@@ -46,7 +46,7 @@ const STORE = {
         "Paris, France",
         "North Siberia, Russia"
       ],
-      correctAnswer: "Paris, France"
+      correctAnswer: 2
     }
   ],
   quizStarted: false,
@@ -101,8 +101,8 @@ function generateQuestionHtml() {
   // what question are we on
   // STORE.questionNumber
   // how do we grab that question?
-  let currentQuestion = STORE.questions[STORE.currentQuestion];
-  // how can we then display that questions title
+  let currentQuestion = STORE.questions[STORE.questionNumber];
+  $("main").text(STORE.questionTitle);
   return `
   <form id="question-form" class="question-form">
   <fieldset>
@@ -122,7 +122,15 @@ function generateQuestionHtml() {
 }
 
 function generateAnswerList(answers) {
-  //all the answers from the array html?
+  return `
+  <div><ul>
+    <li>answer1</li>
+    <li>answer2</li>
+    <li>answer3</li>
+    <li>answer4</li>
+  </ul>
+  </div>
+  `;
 }
 
 function generateResultsScreen() {
@@ -168,13 +176,11 @@ render the page based upon the state of the STORE*/
 
 function render() {
   let html = "";
-  console.log(STORE.quizStarted, STORE.questionNumber);
 
   if (STORE.quizStarted === false) {
     $("main").html(generateStartScreenHtml());
     return;
   } else if (STORE.questionNumber < STORE.questions.length) {
-    console.log("here");
     html = generateQuestionNumberandScoreHtml();
     html += generateQuestionHtml();
     $("main").html(html);
@@ -202,7 +208,7 @@ function handleNextQuestion() {
 function handleAnswerSubmitted() {
   $("main").on("click", "#submit", "#question-form", () => {
     event.preventDefault();
-    const currentQuestion = STORE.questions[STORE.currentQuestions];
+    const currentQuestion = STORE.questions[STORE.currentQuestion];
 
     // Retrieve answer identifier of user-checked radio btn
     let selectedOption = $("input[name=options]:checked").val();
@@ -213,8 +219,11 @@ function handleAnswerSubmitted() {
 
     if (selectedOption === currentQuestion.correctAnswer) {
       STORE.score++;
-      //ok now what?
+      $(optionContainerId).html(generateFeedbackHtml("correct"));
+    } else {
+      $(optionContainerId).html(generateFeedbackHtml("incorrect"));
     }
+    STORE.currentQuestion++;
     // Update STORE and render appropriate section
   });
 }
